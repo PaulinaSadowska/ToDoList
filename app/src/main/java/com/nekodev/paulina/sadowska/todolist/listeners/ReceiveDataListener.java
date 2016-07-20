@@ -1,4 +1,4 @@
-package com.nekodev.paulina.sadowska.todolist;
+package com.nekodev.paulina.sadowska.todolist.listeners;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 

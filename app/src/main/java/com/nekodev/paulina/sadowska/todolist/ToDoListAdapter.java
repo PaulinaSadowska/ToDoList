@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
+import com.nekodev.paulina.sadowska.todolist.listeners.ItemClickedListener;
+import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
+import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,8 +18,10 @@ import java.util.List;
  */
 public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
 
-    private static final int DATA_PACKET_SIZE = 10;
+    private static final int DATA_PACKET_SIZE = 20;
     private List<TaskItem> tasks = new LinkedList<>();
+    private boolean isLoading;
+    private TaskClickedListener taskClickedListener;
 
     @Override
     public TaskItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,6 +32,14 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
     @Override
     public void onBindViewHolder(TaskItemViewHolder holder, int position) {
         holder.fillWIthData(tasks.get(position));
+        holder.setItemClickedListener(new ItemClickedListener() {
+            @Override
+            public void itemClicked(int position) {
+                if(taskClickedListener!=null) {
+                    taskClickedListener.taskClicked(tasks.get(position));
+                }
+            }
+        });
     }
 
     @Override
@@ -34,17 +47,28 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
         return tasks != null ? tasks.size() : 0;
     }
 
-    public void queryData(){
+    public void loadMoreData(){
         DataProvider provider = new DataProvider();
         provider.setReceiveListener(new ReceiveDataListener() {
             @Override
             public void dataReceived(List<TaskItem> items) {
                 if(tasks!=null) {
                     tasks.addAll(items);
+                    isLoading = false;
                     notifyDataSetChanged();
                 }
             }
         });
+        isLoading = true;
         provider.getItems(tasks.size(), tasks.size() + DATA_PACKET_SIZE);
     }
+
+    public boolean canQuery() {
+        return isLoading;
+    }
+
+    public void setTaskClickedListener(TaskClickedListener taskClickedListener) {
+        this.taskClickedListener = taskClickedListener;
+    }
+
 }

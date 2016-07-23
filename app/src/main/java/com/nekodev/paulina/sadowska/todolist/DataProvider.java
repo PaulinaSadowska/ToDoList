@@ -38,9 +38,7 @@ public class DataProvider implements Callback<List<TaskItem>> {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        // prepare call in Retrofit 2.0
         Call<List<TaskItem>> call = retrofit.create(TasksListAPI.class).loadData(start, end);
-        //asynchronous call
         call.enqueue(this);
     }
 
@@ -54,6 +52,6 @@ public class DataProvider implements Callback<List<TaskItem>> {
 
     @Override
     public void onFailure(Call<List<TaskItem>> call, Throwable t) {
-        Log.e(DataProvider.class.getName(), t.getMessage());
+        t.printStackTrace();
     }
 }

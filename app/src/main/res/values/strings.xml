@@ -7,4 +7,6 @@
     <string name="see_modified_only">See modified only</string>
     <string name="see_all_tasks">see all tasks</string>
     <string name="show_modified_only">Show only modified:</string>
+    <string name="save_task">SAVE</string>
+    <string name="edit_task_title">EDIT TASK</string>
 </resources>

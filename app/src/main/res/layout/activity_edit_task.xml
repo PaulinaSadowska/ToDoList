@@ -1,44 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="8dp"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:id="@+id/edit_task_ids_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/edit_task_id"
+            android:fontFamily="sans-serif-light"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="id: 2" />
+
+        <TextView
+            android:id="@+id/edit_task_user_id"
+            android:fontFamily="sans-serif-light"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="user id: 1" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_below="@id/edit_task_ids_layout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_500"/>
+
 
     <CheckBox
         android:id="@+id/edit_task_is_completed"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/edit_task_id"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_task_is_completed"
-        tools:text="id: 2"/>
-
-    <TextView
-        android:id="@+id/edit_task_user_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edit_task_id"
-        tools:text="user id: 1"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_below="@id/edit_task_ids_layout" />
 
     <EditText
         android:id="@+id/edit_task_title"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginTop="12dp"
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_task_user_id"
-        tools:text="some title"/>
+        android:layout_below="@id/edit_task_ids_layout"
+        android:layout_toRightOf="@id/edit_task_is_completed"
+        android:maxLines="3"
+        tools:text="some title" />
 
     <Button
         android:id="@+id/edit_task_save_button"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        tools:text = "SAVE LOCALY"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:text="@string/save_task"
+        android:textColor="@color/colorAccent" />
 
 
 </RelativeLayout>

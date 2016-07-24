@@ -89,4 +89,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
             notifyItemChanged(id-1);
         }
     }
+
+    public void clearAdapter(){
+        tasks.clear();
+        notifyDataSetChanged();
+    }
+
+    public void loadModifiedData() {
+        tasks.clear();
+        tasks = TaskItem.find(TaskItem.class, "was_Modified = 1");
+        notifyDataSetChanged();
+    }
 }

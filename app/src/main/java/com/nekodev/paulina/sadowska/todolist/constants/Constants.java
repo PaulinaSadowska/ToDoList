@@ -7,6 +7,7 @@ public class Constants {
 
     public static final String ORIENTATION_CHANGED = "OrientationChanged";
     public static final String ORIENTATION_CHANGED_KEY = "OrientationChangedFlag";
+    public static final String SHOW_ONLY_MODIFIED = "showOnlyModified";
 
 
     public class IntentExtra{

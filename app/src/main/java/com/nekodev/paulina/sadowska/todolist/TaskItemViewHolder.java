@@ -3,7 +3,6 @@ package com.nekodev.paulina.sadowska.todolist;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
@@ -50,11 +49,11 @@ public class TaskItemViewHolder extends RecyclerView.ViewHolder implements View.
         super(itemView);
         itemView.setOnClickListener(this);
         ButterKnife.bind(this, itemView);
-        taskCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        taskCompleted.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 if(checkedChangedListener!=null){
-                    checkedChangedListener.checkedChanged(getAdapterPosition(), isChecked);
+                    checkedChangedListener.checkedChanged(getAdapterPosition(), taskCompleted.isChecked());
                 }
             }
         });

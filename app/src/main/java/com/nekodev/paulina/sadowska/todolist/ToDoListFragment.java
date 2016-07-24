@@ -71,7 +71,7 @@ public class ToDoListFragment extends Fragment {
                 previewActivity.putExtra(Constants.IntentExtra.USER_ID_KEY, task.getUserId());
                 previewActivity.putExtra(Constants.IntentExtra.ID_KEY, task.getId());
                 previewActivity.putExtra(Constants.IntentExtra.IS_COMPLETED_KEY, task.isCompleted());
-                startActivityForResult(previewActivity, Constants.EDIT_TASK_RESULT);
+                startActivityForResult(previewActivity, Constants.ActivityResults.EDIT_TASK_RESULT);
             }
         });
         mRecyclerView.setAdapter(recyclerViewAdapter);
@@ -84,16 +84,15 @@ public class ToDoListFragment extends Fragment {
         dataSaver.setSaveListener(new SaveDataListener() {
             @Override
             public void dataSaved() {
-                TaskItem.deleteAll(TaskItem.class);
                 Toast.makeText(getActivity(), R.string.data_saved, Toast.LENGTH_SHORT).show();
             }
         });
-        dataSaver.saveTasks(TaskItem.listAll(TaskItem.class));
+        dataSaver.saveTasksToAPI();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.EDIT_TASK_RESULT && data!=null)
+        if (requestCode == Constants.ActivityResults.EDIT_TASK_RESULT && data!=null)
         {
             if(data.hasExtra(Constants.IntentExtra.IS_COMPLETED_KEY)
                 && data.hasExtra(Constants.IntentExtra.TITLE_KEY)
@@ -104,7 +103,7 @@ public class ToDoListFragment extends Fragment {
                 String title = data.getStringExtra(Constants.IntentExtra.TITLE_KEY);
                 Long taskId = data.getLongExtra(Constants.IntentExtra.ID_KEY, 0);
                 int userId = data.getIntExtra(Constants.IntentExtra.USER_ID_KEY, 0);
-                recyclerViewAdapter.replaceTask(new TaskItem(title, userId, taskId, isCompleted));
+                recyclerViewAdapter.replaceTask(new TaskItem(title, userId, taskId, isCompleted, true));
             }
         }
     }

@@ -6,6 +6,7 @@ import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.daos.TasksListAPI;
 import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,35 +29,66 @@ public class DataProvider implements Callback<List<TaskItem>> {
     private ReceiveDataListener receiveListener;
 
 
-    public void getItems(int start, int end){
+    public void getItems(int start, int end) {
+        List<TaskItem> tasks = TaskItem.listAll(TaskItem.class);
+        if (tryToFindLocally(start, end)) {
+            return;
+        }
+        fetchFromApi(start, end);
+    }
+
+    private void fetchFromApi(int start, int end) {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-
         Call<List<TaskItem>> call = retrofit.create(TasksListAPI.class).loadData(start, end);
         call.enqueue(this);
     }
 
+    private boolean tryToFindLocally(int start, int end) {
+        List<TaskItem> localTasks = getLocalData(start, end);
+        if (localTasks != null && localTasks.size() >= (end - start - 1)) {
+            if (receiveListener != null) {
+                receiveListener.dataReceived(localTasks);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private List<TaskItem> getLocalData(int start, int end) {
+        if (end < start)
+            return null;
+
+        List<TaskItem> tasks = new LinkedList<>();
+        for (int i = 0; i < end - start; i++) {
+            TaskItem task = TaskItem.findById(TaskItem.class, start + i);
+            if (task != null)
+                tasks.add(task);
+        }
+        return tasks;
+    }
+
     @Override
     public void onResponse(Call<List<TaskItem>> call, Response<List<TaskItem>> response) {
-        if(receiveListener!=null){
-            receiveListener.dataReceived(getModifiedList(response.body()));
+        if (response.isSuccessful() && receiveListener != null) {
+            List<TaskItem> modifiedTasks = getModifiedList(response.body());
+            for (TaskItem item : modifiedTasks) {
+                TaskItem.save(item);
+            }
+            receiveListener.dataReceived(modifiedTasks);
         }
     }
 
     private List<TaskItem> getModifiedList(List<TaskItem> tasks) {
-        //Todo - WORKS ONLY FOR FIRST PACK OF DATA! :(
-        List<TaskItem> modifiedTasks = TaskItem.listAll(TaskItem.class);
-        for (TaskItem task : modifiedTasks) {
-            int id = task.getIdInt();
-            if(tasks.size() >= id) {
-                if (tasks.get(id-1).getIdInt() == id) {
-                    tasks.set(id-1, task);
-                }
-            }
+        for (int i = 0; i < tasks.size(); i++) {
+            int id = tasks.get(i).getIdInt();
+            TaskItem modifiedTask = TaskItem.findById(TaskItem.class, id);
+            if (modifiedTask != null)
+                tasks.set(i, modifiedTask);
         }
         return tasks;
     }

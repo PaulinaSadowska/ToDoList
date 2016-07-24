@@ -3,4 +3,5 @@
     <string name="id_label">Id: %d</string>
     <string name="user_id_label">User id: %d</string>
     <string name="data_saved">Data saved to the API</string>
+    <string name="filter">Filter</string>
 </resources>

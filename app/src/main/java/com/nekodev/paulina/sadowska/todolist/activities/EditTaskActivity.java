@@ -49,7 +49,7 @@ public class EditTaskActivity extends AppCompatActivity {
             String title = getIntent().getStringExtra(Constants.IntentExtra.TITLE_KEY);
             Long taskId = getIntent().getLongExtra(Constants.IntentExtra.ID_KEY, 0);
             int userId = getIntent().getIntExtra(Constants.IntentExtra.USER_ID_KEY, 0);
-            taskItem = new TaskItem(title, userId, taskId, isCompleted);
+            taskItem = new TaskItem(title, userId, taskId, isCompleted, false);
             fillLayoutWIthData(taskItem);
         }
     }
@@ -76,7 +76,7 @@ public class EditTaskActivity extends AppCompatActivity {
         returnIntent.putExtra(Constants.IntentExtra.ID_KEY, task.getId());
         returnIntent.putExtra(Constants.IntentExtra.USER_ID_KEY, task.getUserId());
         returnIntent.putExtra(Constants.IntentExtra.TITLE_KEY, task.getTitle());
-        setResult(Constants.EDIT_TASK_RESULT, returnIntent);
+        setResult(Constants.ActivityResults.EDIT_TASK_RESULT, returnIntent);
         finish();
     }
 
@@ -88,6 +88,6 @@ public class EditTaskActivity extends AppCompatActivity {
     private TaskItem getTaskData() {
         String title = mTaskTitle.getText().toString();
         boolean isCompleted = mTaskIsCompleted.isChecked();
-        return new TaskItem(title, taskItem.getUserId(), taskItem.getId(), isCompleted);
+        return new TaskItem(title, taskItem.getUserId(), taskItem.getId(), isCompleted, true);
     }
 }

@@ -47,6 +47,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
             public void checkedChanged(int position, boolean isChecked) {
                 TaskItem task = tasks.get(position);
                 task.setCompleted(isChecked);
+                task.setWasModified(true);
                 TaskItem.save(task);
             }
         });

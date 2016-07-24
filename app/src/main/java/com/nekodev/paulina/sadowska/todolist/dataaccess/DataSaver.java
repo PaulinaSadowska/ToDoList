@@ -26,7 +26,7 @@ public class DataSaver implements Callback<ResponseBody> {
     private int tasksListSize;
 
 
-    public void saveTasks(List<TaskItem> tasks) {
+    public void saveTasksToAPI() {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
@@ -34,9 +34,10 @@ public class DataSaver implements Callback<ResponseBody> {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         tasksCount = 0;
+        List<TaskItem> tasks = TaskItem.listAll(TaskItem.class, "was_Modified = 1");
         tasksListSize = tasks.size();
         for (TaskItem task : tasks) {
-            Call<ResponseBody> call = retrofit.create(TasksListAPI.class).putSavedTasks(task.getIdInt(), task);
+            Call<ResponseBody> call = retrofit.create(TasksListAPI.class).putSavedTasks(task.getTitle(), task.getUserId(), task.getIdInt(), task.isCompleted());
             call.enqueue(this);
         }
     }
@@ -47,9 +48,18 @@ public class DataSaver implements Callback<ResponseBody> {
             tasksCount++;
             if (tasksCount == tasksListSize && saveListener != null) {
                 {
+                    setAllNotModified();
                     saveListener.dataSaved();
                 }
             }
+        }
+    }
+
+    private void setAllNotModified() {
+        List<TaskItem> tasks = TaskItem.listAll(TaskItem.class, "was_Modified = 1");
+        for (TaskItem task : tasks) {
+            task.setWasModified(false);
+            TaskItem.save(task);
         }
     }
 

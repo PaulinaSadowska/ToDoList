@@ -9,15 +9,17 @@ public class TaskItem extends SugarRecord{
     private String title;
     private int userId;
     private boolean completed;
+    private boolean wasModified = false;
 
 
     public TaskItem(){}
 
-    public TaskItem(String title, int userId, Long id, boolean isCompleted){
+    public TaskItem(String title, int userId, Long id, boolean isCompleted, boolean wasModified){
         this.title = title;
         this.userId = userId;
         this.setId(id);
         this.completed = isCompleted;
+        this.wasModified = wasModified;
     }
 
     public void setTitle(String title) {
@@ -39,5 +41,13 @@ public class TaskItem extends SugarRecord{
 
     public int getIdInt() {
         return (int)((long)getId());
+    }
+
+    public boolean isWasModified() {
+        return wasModified;
+    }
+
+    public void setWasModified(boolean wasModified) {
+        this.wasModified = wasModified;
     }
 }

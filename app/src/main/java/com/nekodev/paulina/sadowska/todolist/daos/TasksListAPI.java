@@ -2,8 +2,12 @@ package com.nekodev.paulina.sadowska.todolist.daos;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -12,4 +16,7 @@ import retrofit2.http.Query;
 public interface TasksListAPI {
     @GET("/todos/")
     Call<List<TaskItem>> loadData(@Query("_start") int start, @Query("_end") int end);
+
+    @PUT("/todos/{id}")
+    Call<ResponseBody> putSavedTasks(@Path("id") int id, @Body TaskItem task);
 }

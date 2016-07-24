@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.nekodev.paulina.sadowska.todolist.activities.EditTaskActivity;
 import com.nekodev.paulina.sadowska.todolist.constants.Constants;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
+import com.nekodev.paulina.sadowska.todolist.dataaccess.DataSaver;
+import com.nekodev.paulina.sadowska.todolist.listeners.SaveDataListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
 
 import butterknife.BindView;
@@ -33,7 +35,7 @@ public class ToDoListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.todo_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.todo_list_fragment, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -53,7 +55,7 @@ public class ToDoListFragment extends Fragment {
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     if (!recyclerViewAdapter.canQuery()) {
                         int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                        if (lastVisibleItem > recyclerViewAdapter.getItemCount() - ITEM_COUNT_THRESHOLD){
+                        if (lastVisibleItem > recyclerViewAdapter.getItemCount() - ITEM_COUNT_THRESHOLD) {
                             recyclerViewAdapter.loadMoreData();
                         }
                     }
@@ -69,7 +71,7 @@ public class ToDoListFragment extends Fragment {
                 previewActivity.putExtra(Constants.IntentExtra.USER_ID_KEY, task.getUserId());
                 previewActivity.putExtra(Constants.IntentExtra.ID_KEY, task.getId());
                 previewActivity.putExtra(Constants.IntentExtra.IS_COMPLETED_KEY, task.isCompleted());
-                startActivity(previewActivity);
+                startActivityForResult(previewActivity, Constants.EDIT_TASK_RESULT);
             }
         });
         mRecyclerView.setAdapter(recyclerViewAdapter);
@@ -77,10 +79,33 @@ public class ToDoListFragment extends Fragment {
     }
 
     @OnClick(R.id.todo_list_save)
-    public void saveList()
-    {
-        TaskItem.deleteAll(TaskItem.class);
-        Toast.makeText(getActivity(), "ALL ITEMS DELETED", Toast.LENGTH_SHORT).show();
+    public void saveList() {
+        DataSaver dataSaver = new DataSaver();
+        dataSaver.setSaveListener(new SaveDataListener() {
+            @Override
+            public void dataSaved() {
+                TaskItem.deleteAll(TaskItem.class);
+                Toast.makeText(getActivity(), R.string.data_saved, Toast.LENGTH_SHORT).show();
+            }
+        });
+        dataSaver.saveTasks(TaskItem.listAll(TaskItem.class));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.EDIT_TASK_RESULT && data!=null)
+        {
+            if(data.hasExtra(Constants.IntentExtra.IS_COMPLETED_KEY)
+                && data.hasExtra(Constants.IntentExtra.TITLE_KEY)
+                && data.hasExtra(Constants.IntentExtra.ID_KEY)
+                && data.hasExtra(Constants.IntentExtra.USER_ID_KEY))
+            {
+                Boolean isCompleted = data.getExtras().getBoolean(Constants.IntentExtra.IS_COMPLETED_KEY);
+                String title = data.getStringExtra(Constants.IntentExtra.TITLE_KEY);
+                Long taskId = data.getLongExtra(Constants.IntentExtra.ID_KEY, 0);
+                int userId = data.getIntExtra(Constants.IntentExtra.USER_ID_KEY, 0);
+                recyclerViewAdapter.replaceTask(new TaskItem(title, userId, taskId, isCompleted));
+            }
+        }
+    }
 }

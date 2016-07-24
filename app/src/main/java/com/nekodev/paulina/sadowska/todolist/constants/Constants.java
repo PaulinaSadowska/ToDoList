@@ -5,6 +5,8 @@ package com.nekodev.paulina.sadowska.todolist.constants;
  */
 public class Constants {
 
+    public static final int EDIT_TASK_RESULT = 999;
+
     public class IntentExtra{
         public static final String TITLE_KEY = "TitleKey";
         public static final String USER_ID_KEY = "UserIdKey";

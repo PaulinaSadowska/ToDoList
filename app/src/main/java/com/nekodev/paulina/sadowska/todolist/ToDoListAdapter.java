@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.dataaccess.DataProvider;
+import com.nekodev.paulina.sadowska.todolist.listeners.CheckedChangedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ItemClickedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
@@ -41,6 +42,14 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
                 }
             }
         });
+        holder.setCheckedChangedListener(new CheckedChangedListener() {
+            @Override
+            public void checkedChanged(int position, boolean isChecked) {
+                TaskItem task = tasks.get(position);
+                task.setCompleted(isChecked);
+                TaskItem.save(task);
+            }
+        });
     }
 
     @Override
@@ -72,4 +81,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
         this.taskClickedListener = taskClickedListener;
     }
 
+    public void replaceTask(TaskItem taskItem) {
+        int id = taskItem.getIdInt();
+        if(id<tasks.size() && tasks.get(id-1).getIdInt() == id){
+            tasks.set(id-1, taskItem);
+            notifyItemChanged(id-1);
+        }
+    }
 }

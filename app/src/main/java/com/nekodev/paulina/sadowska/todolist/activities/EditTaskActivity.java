@@ -1,5 +1,6 @@
 package com.nekodev.paulina.sadowska.todolist.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
@@ -44,7 +45,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 && getIntent().hasExtra(Constants.IntentExtra.USER_ID_KEY)
                 && getIntent().hasExtra(Constants.IntentExtra.ID_KEY))
         {
-            Boolean isCompleted = (getIntent().getByteExtra(Constants.IntentExtra.IS_COMPLETED_KEY, (byte) 0) == 1);
+            Boolean isCompleted = getIntent().getExtras().getBoolean(Constants.IntentExtra.IS_COMPLETED_KEY);
             String title = getIntent().getStringExtra(Constants.IntentExtra.TITLE_KEY);
             Long taskId = getIntent().getLongExtra(Constants.IntentExtra.ID_KEY, 0);
             int userId = getIntent().getIntExtra(Constants.IntentExtra.USER_ID_KEY, 0);
@@ -70,6 +71,12 @@ public class EditTaskActivity extends AppCompatActivity {
 
         TaskItem task = getTaskData();
         task.save();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constants.IntentExtra.IS_COMPLETED_KEY, task.isCompleted());
+        returnIntent.putExtra(Constants.IntentExtra.ID_KEY, task.getId());
+        returnIntent.putExtra(Constants.IntentExtra.USER_ID_KEY, task.getUserId());
+        returnIntent.putExtra(Constants.IntentExtra.TITLE_KEY, task.getTitle());
+        setResult(Constants.EDIT_TASK_RESULT, returnIntent);
         finish();
     }
 

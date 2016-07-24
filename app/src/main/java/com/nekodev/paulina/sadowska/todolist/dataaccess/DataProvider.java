@@ -1,7 +1,5 @@
 package com.nekodev.paulina.sadowska.todolist.dataaccess;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
@@ -44,7 +42,6 @@ public class DataProvider implements Callback<List<TaskItem>> {
 
     @Override
     public void onResponse(Call<List<TaskItem>> call, Response<List<TaskItem>> response) {
-        Log.d(DataProvider.class.getName(), "response received");
         if(receiveListener!=null){
             receiveListener.dataReceived(getModifiedList(response.body()));
         }

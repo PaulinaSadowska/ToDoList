@@ -1,5 +1,6 @@
 package com.nekodev.paulina.sadowska.todolist.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -20,5 +21,10 @@ public class ToDoListActivity extends AppCompatActivity {
         }
         transaction.replace(R.id.activity_todo_list_fragment_container, usersFragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

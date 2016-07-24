@@ -3,9 +3,11 @@ package com.nekodev.paulina.sadowska.todolist;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
+import com.nekodev.paulina.sadowska.todolist.listeners.CheckedChangedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ItemClickedListener;
 
 import butterknife.BindView;
@@ -22,6 +24,7 @@ public class TaskItemViewHolder extends RecyclerView.ViewHolder implements View.
     TextView taskTitle;
 
     private ItemClickedListener itemClickedListener;
+    private CheckedChangedListener checkedChangedListener;
 
     public void fillWIthData(TaskItem task){
         taskTitle.setText(task.getTitle());
@@ -47,9 +50,21 @@ public class TaskItemViewHolder extends RecyclerView.ViewHolder implements View.
         super(itemView);
         itemView.setOnClickListener(this);
         ButterKnife.bind(this, itemView);
+        taskCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(checkedChangedListener!=null){
+                    checkedChangedListener.checkedChanged(getAdapterPosition(), isChecked);
+                }
+            }
+        });
     }
 
     public void setItemClickedListener(ItemClickedListener itemClickedListener) {
         this.itemClickedListener = itemClickedListener;
+    }
+
+    public void setCheckedChangedListener(CheckedChangedListener checkedChangedListener) {
+        this.checkedChangedListener = checkedChangedListener;
     }
 }

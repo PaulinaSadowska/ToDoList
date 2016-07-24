@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface ReceiveDataListener {
     void dataReceived(List<TaskItem> items);
+    void onFailure();
 }

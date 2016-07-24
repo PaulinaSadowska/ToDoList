@@ -66,6 +66,9 @@ public class DataSaver implements Callback<ResponseBody> {
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         t.printStackTrace();
+        if(saveListener!=null){
+            saveListener.onFailure();
+        }
     }
 
     public void setSaveListener(SaveDataListener saveListener) {

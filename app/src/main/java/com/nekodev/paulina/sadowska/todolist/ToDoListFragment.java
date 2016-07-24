@@ -17,6 +17,7 @@ import com.nekodev.paulina.sadowska.todolist.activities.EditTaskActivity;
 import com.nekodev.paulina.sadowska.todolist.constants.Constants;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.dataaccess.DataSaver;
+import com.nekodev.paulina.sadowska.todolist.listeners.LoadDataFailedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.SaveDataListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
 
@@ -98,6 +99,12 @@ public class ToDoListFragment extends Fragment {
                 startPreviewActivity(task);
             }
         });
+        recyclerViewAdapter.setLoadDataFailedListener(new LoadDataFailedListener() {
+            @Override
+            public void onLoadDataFailed() {
+                Toast.makeText(getActivity(), R.string.load_data_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(recyclerViewAdapter);
         filterView(showOnlyModified);
     }
@@ -138,6 +145,11 @@ public class ToDoListFragment extends Fragment {
                     filterView(false);
                 }
                 Toast.makeText(getActivity(), R.string.data_saved, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(getActivity(), R.string.error_while_saving, Toast.LENGTH_SHORT).show();
             }
         });
         dataSaver.saveTasksToAPI();

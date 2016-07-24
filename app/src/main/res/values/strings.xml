@@ -9,4 +9,6 @@
     <string name="show_modified_only">Show modified only:</string>
     <string name="save_task">SAVE</string>
     <string name="edit_task_title">EDIT TASK</string>
+    <string name="error_while_saving">Error occurred while saving data. Please check if you\'re connected to server.</string>
+    <string name="load_data_failed">Error occurred while loading data. Please check if you\'re connected to server.</string>
 </resources>

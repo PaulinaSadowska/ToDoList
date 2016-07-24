@@ -96,5 +96,8 @@ public class DataProvider implements Callback<List<TaskItem>> {
     @Override
     public void onFailure(Call<List<TaskItem>> call, Throwable t) {
         t.printStackTrace();
+        if(receiveListener!=null){
+            receiveListener.onFailure();
+        }
     }
 }

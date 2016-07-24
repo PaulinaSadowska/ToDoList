@@ -5,4 +5,5 @@ package com.nekodev.paulina.sadowska.todolist.listeners;
  */
 public interface SaveDataListener {
     void dataSaved();
+    void onFailure();
 }

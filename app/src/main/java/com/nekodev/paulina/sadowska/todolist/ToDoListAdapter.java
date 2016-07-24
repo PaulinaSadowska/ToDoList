@@ -9,6 +9,7 @@ import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.dataaccess.DataProvider;
 import com.nekodev.paulina.sadowska.todolist.listeners.CheckedChangedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ItemClickedListener;
+import com.nekodev.paulina.sadowska.todolist.listeners.LoadDataFailedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
 
@@ -24,6 +25,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
     private List<TaskItem> tasks = new LinkedList<>();
     private boolean isLoading;
     private TaskClickedListener taskClickedListener;
+    private LoadDataFailedListener loadDataFailedListener;
 
     @Override
     public TaskItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -69,6 +71,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
                     notifyDataSetChanged();
                 }
             }
+
+            @Override
+            public void onFailure() {
+                if(loadDataFailedListener!=null)
+                    loadDataFailedListener.onLoadDataFailed();
+            }
         });
         isLoading = true;
         provider.getItems(tasks.size(), tasks.size() + DATA_PACKET_SIZE);
@@ -80,6 +88,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<TaskItemViewHolder> {
 
     public void setTaskClickedListener(TaskClickedListener taskClickedListener) {
         this.taskClickedListener = taskClickedListener;
+    }
+
+    public void setLoadDataFailedListener(LoadDataFailedListener loadDataFailedListener) {
+        this.loadDataFailedListener = loadDataFailedListener;
     }
 
     public void replaceTask(TaskItem taskItem) {

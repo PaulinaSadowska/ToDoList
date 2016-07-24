@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:layout_margin="8dp"
+    android:layout_margin="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,8 +14,7 @@
 
         <TextView
             android:id="@+id/edit_task_id"
-            android:fontFamily="sans-serif-light"
-            android:textSize="14sp"
+            style="@style/id_label_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -24,8 +23,7 @@
 
         <TextView
             android:id="@+id/edit_task_user_id"
-            android:fontFamily="sans-serif-light"
-            android:textSize="14sp"
+            style="@style/id_label_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,13 +50,13 @@
 
     <EditText
         android:id="@+id/edit_task_title"
-        android:fontFamily="sans-serif-condensed"
+        style="@style/normal_text"
         android:layout_marginTop="12dp"
-        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_task_ids_layout"
         android:layout_toRightOf="@id/edit_task_is_completed"
+        android:layout_toEndOf="@id/edit_task_is_completed"
         android:maxLines="3"
         tools:text="some title" />
 

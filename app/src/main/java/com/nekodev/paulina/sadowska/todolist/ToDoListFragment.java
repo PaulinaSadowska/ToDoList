@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.nekodev.paulina.sadowska.todolist.activities.EditTaskActivity;
+import com.nekodev.paulina.sadowska.todolist.constants.Constants;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;
 
@@ -28,7 +30,6 @@ public class ToDoListFragment extends Fragment {
     RecyclerView mRecyclerView;
 
     private ToDoListAdapter recyclerViewAdapter;
-    private TaskClickedListener taskClickedListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,22 +64,23 @@ public class ToDoListFragment extends Fragment {
         recyclerViewAdapter.setTaskClickedListener(new TaskClickedListener() {
             @Override
             public void taskClicked(TaskItem task) {
-                Intent editTaskActivity = new Intent(getActivity(), EditTaskActivity.class);
-                startActivity(editTaskActivity);
+                Intent previewActivity = new Intent(getActivity(), EditTaskActivity.class);
+                previewActivity.putExtra(Constants.IntentExtra.TITLE_KEY, task.getTitle());
+                previewActivity.putExtra(Constants.IntentExtra.USER_ID_KEY, task.getUserId());
+                previewActivity.putExtra(Constants.IntentExtra.ID_KEY, task.getId());
+                previewActivity.putExtra(Constants.IntentExtra.IS_COMPLETED_KEY, task.isCompleted());
+                startActivity(previewActivity);
             }
         });
         mRecyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.loadMoreData();
     }
 
-    public void setTaskClickedListener(TaskClickedListener taskClickedListener) {
-        this.taskClickedListener = taskClickedListener;
-    }
-
     @OnClick(R.id.todo_list_save)
     public void saveList()
     {
-        Toast.makeText(getActivity(), "SAVE", Toast.LENGTH_SHORT).show();
+        TaskItem.deleteAll(TaskItem.class);
+        Toast.makeText(getActivity(), "ALL ITEMS DELETED", Toast.LENGTH_SHORT).show();
     }
 
 }

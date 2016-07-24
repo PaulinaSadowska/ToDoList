@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
+import com.nekodev.paulina.sadowska.todolist.dataaccess.DataProvider;
 import com.nekodev.paulina.sadowska.todolist.listeners.ItemClickedListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
 import com.nekodev.paulina.sadowska.todolist.listeners.TaskClickedListener;

@@ -1,4 +1,4 @@
-package com.nekodev.paulina.sadowska.todolist;
+package com.nekodev.paulina.sadowska.todolist.dataaccess;
 
 import android.util.Log;
 
@@ -46,8 +46,22 @@ public class DataProvider implements Callback<List<TaskItem>> {
     public void onResponse(Call<List<TaskItem>> call, Response<List<TaskItem>> response) {
         Log.d(DataProvider.class.getName(), "response received");
         if(receiveListener!=null){
-            receiveListener.dataReceived(response.body());
+            receiveListener.dataReceived(getModifiedList(response.body()));
         }
+    }
+
+    private List<TaskItem> getModifiedList(List<TaskItem> tasks) {
+        //Todo - WORKS ONLY FOR FIRST PACK OF DATA! :(
+        List<TaskItem> modifiedTasks = TaskItem.listAll(TaskItem.class);
+        for (TaskItem task : modifiedTasks) {
+            int id = task.getIdInt();
+            if(tasks.size() >= id) {
+                if (tasks.get(id-1).getIdInt() == id) {
+                    tasks.set(id-1, task);
+                }
+            }
+        }
+        return tasks;
     }
 
     @Override

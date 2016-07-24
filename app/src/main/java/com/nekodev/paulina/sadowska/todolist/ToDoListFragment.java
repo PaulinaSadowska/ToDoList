@@ -132,6 +132,11 @@ public class ToDoListFragment extends Fragment {
         dataSaver.setSaveListener(new SaveDataListener() {
             @Override
             public void dataSaved() {
+                if(showOnlyModified) {
+                    showOnlyModified = false;
+                    mFilterSwitch.setChecked(false);
+                    filterView(false);
+                }
                 Toast.makeText(getActivity(), R.string.data_saved, Toast.LENGTH_SHORT).show();
             }
         });

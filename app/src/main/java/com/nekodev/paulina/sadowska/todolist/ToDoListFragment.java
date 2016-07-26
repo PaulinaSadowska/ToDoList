@@ -51,8 +51,8 @@ public class ToDoListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(getArguments()!=null){
-            showOnlyModified = getArguments().getBoolean(Constants.SHOW_ONLY_MODIFIED);
+        if(savedInstanceState!=null){
+            showOnlyModified = savedInstanceState.getBoolean(Constants.SHOW_ONLY_MODIFIED);
         }
         configureRecyclerView();
         configureFilterSwitch();
@@ -171,7 +171,11 @@ public class ToDoListFragment extends Fragment {
         }
     }
 
-    public boolean getShowIsModified(){
-        return showOnlyModified;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(Constants.ORIENTATION_CHANGED_KEY, Constants.ORIENTATION_CHANGED);
+        outState.putBoolean(Constants.SHOW_ONLY_MODIFIED, showOnlyModified);
+        super.onSaveInstanceState(outState);
     }
 }

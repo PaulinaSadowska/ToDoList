@@ -2,6 +2,7 @@ package com.nekodev.paulina.sadowska.todolist.dataaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nekodev.paulina.sadowska.todolist.constants.Constants;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.daos.TasksListAPI;
 import com.nekodev.paulina.sadowska.todolist.listeners.SaveDataListener;
@@ -20,7 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class DataSaver implements Callback<ResponseBody> {
 
-    private static final String ADDRESS = "http://127.0.0.1:3000/";
     private SaveDataListener saveListener;
     private int tasksCount;
     private int tasksListSize;
@@ -30,7 +30,7 @@ public class DataSaver implements Callback<ResponseBody> {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ADDRESS)
+                .baseUrl(Constants.API_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         tasksCount = 0;

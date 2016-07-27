@@ -2,6 +2,7 @@ package com.nekodev.paulina.sadowska.todolist.dataaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nekodev.paulina.sadowska.todolist.constants.Constants;
 import com.nekodev.paulina.sadowska.todolist.daos.TaskItem;
 import com.nekodev.paulina.sadowska.todolist.daos.TasksListAPI;
 import com.nekodev.paulina.sadowska.todolist.listeners.ReceiveDataListener;
@@ -20,8 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class DataProvider implements Callback<List<TaskItem>> {
 
-    private static final String ADDRESS = "http://127.0.0.1:3000/";
-
     public void setReceiveListener(ReceiveDataListener receiveListener) {
         this.receiveListener = receiveListener;
     }
@@ -30,7 +29,6 @@ public class DataProvider implements Callback<List<TaskItem>> {
 
 
     public void getItems(int start, int end) {
-        List<TaskItem> tasks = TaskItem.listAll(TaskItem.class);
         if (tryToFindLocally(start, end)) {
             return;
         }
@@ -41,7 +39,7 @@ public class DataProvider implements Callback<List<TaskItem>> {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ADDRESS)
+                .baseUrl(Constants.API_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         Call<List<TaskItem>> call = retrofit.create(TasksListAPI.class).loadData(start, end);

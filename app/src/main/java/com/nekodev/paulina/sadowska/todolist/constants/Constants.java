@@ -5,9 +5,13 @@ package com.nekodev.paulina.sadowska.todolist.constants;
  */
 public class Constants {
 
-    public static final String ORIENTATION_CHANGED = "OrientationChanged";
-    public static final String ORIENTATION_CHANGED_KEY = "OrientationChangedFlag";
-    public static final String SHOW_ONLY_MODIFIED = "showOnlyModified";
+    public static final String API_ADDRESS = "http://127.0.0.1:3000/";
+
+    public class SavedState{
+        public static final String ORIENTATION_CHANGED = "OrientationChanged";
+        public static final String ORIENTATION_CHANGED_KEY = "OrientationChangedFlag";
+        public static final String SHOW_ONLY_MODIFIED = "showOnlyModified";
+    }
 
 
     public class IntentExtra{
@@ -19,6 +23,5 @@ public class Constants {
 
     public class ActivityResults{
         public static final int EDIT_TASK_RESULT = 999;
-        public static final int CHANGE_FILTER_RESULT = 87;
     }
 }

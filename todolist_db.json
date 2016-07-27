@@ -1,7 +1,7 @@
 {
   "todos": [
     {
-      "title": "delectus aut autem Aaaaa WOWkj\n",
+      "title": "delectus aut autem Aaaaa WOWkj",
       "userId": 1,
       "completed": false,
       "id": 1
@@ -39,7 +39,7 @@
     {
       "title": "illo expedita consequatur quia in Abbb",
       "userId": 1,
-      "completed": true,
+      "completed": false,
       "id": 7
     },
     {
